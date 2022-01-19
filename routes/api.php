@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // API Routes
-Route::group(['prefix' => 'v1'], function () { 
+Route::group(['prefix' => 'v1'], function () {
     Route::post('/login', [\App\Http\Controllers\ApiAuthController::class, 'login']);
     Route::post('/register', [\App\Http\Controllers\ApiAuthController::class, 'register']);
     //---------Admin Routing----------
@@ -22,5 +22,10 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/logout', [\App\Http\Controllers\ApiAuthController::class, 'logout']);
         //dashboard
         Route::get('/dashboard/data', [\App\Http\Controllers\DashboardController::class, 'getDashboardData']);
+
+        // apiResources
+        Route::get('/users', [\App\Http\Controllers\UserController::class, 'index']);
+       /* Route::apiResources(['users' => \App\Http\Controllers\UserController::class]);
+        Route::apiResource('users', \App\Http\Controllers\UserController::class);*/
     });
 });

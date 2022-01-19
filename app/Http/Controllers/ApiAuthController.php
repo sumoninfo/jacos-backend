@@ -79,68 +79,21 @@ class ApiAuthController extends Controller
         ]);
     }
 
-    /**
-     * Display a listing of the resource.
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function otpLogin(Request $request)
+    public function logout2(Request $res)
     {
-        $request->validate([
-            'mobile' => 'required|string',
-            'otp'    => 'required|string',
-        ]);
+        if (Auth::user()) {
+            $user = Auth::user()->token();
+            $user->revoke();
 
-        $user = User::where([
-            ['mobile', '=', request('mobile')],
-            ['otp', '=', request('otp')],
-            ['role_id', '=', '5']
-        ])->first();
-        if (!$user) {
-            return response()->json(['message' => 'Access denied'], 403);
+            return response()->json([
+                'success' => true,
+                'message' => 'Logout successfully'
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unable to Logout'
+            ]);
         }
-        if ($user) {
-            Auth::login($user, true);
-            User::where('mobile', '=', $request->mobile)->update(['otp' => null]);
-        }
-
-//    $user = $request->user();
-
-        $tokenResult = $user->createToken('Laravel Password Grant Client');
-        $token       = $tokenResult->token;
-        return response()->json([
-            'access_token' => $tokenResult->accessToken,
-            'token_type'   => 'Bearer',
-            'user'         => $user,
-            'expires_at'   => Carbon::parse(
-                $tokenResult->token->expires_at
-            )->toDateTimeString()
-        ]);
-
-//        $token = $user->createToken('Laravel Password Grant Client')->accessToken;
-//        $response = ['token' => "Bearer ".$token];
-//
-//
-//        if($request->remember_me){
-//            $token->expires_at = Carbon::now()->addWeeks(1);
-//        }
-//        //For making login just Add "Bearer " before token and key name is "Authorization"
-//
-//        return response()->json($response);
-    }
-
-    /**
-     * Display a listing of the resource.
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function sendOtp(Request $request)
-    {
-
-        $otp = rand(1000, 9999);
-        Log::info("otp = " . $otp);
-        $user = User::where('mobile', '=', $request->mobile)->update(['otp' => $otp]);
-        // send otp to mobile no using sms api
-        return response()->json([$user], 200);
     }
 }
