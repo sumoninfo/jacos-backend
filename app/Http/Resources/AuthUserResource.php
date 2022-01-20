@@ -22,6 +22,7 @@ class AuthUserResource extends JsonResource
             'date_of_birth' => $this->date_of_birth,
             'gender'        => $this->gender,
             'address'       => $this->address,
+            'created_at'    => $this->created_at,
         ];
     }
 }
