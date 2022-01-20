@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // API Routes
-Route::group(['prefix' => 'v1'], function () {
+Route::middleware(['DeviceAuthenticationCheck'])->prefix('v1')->group(function () {
     Route::post('/login', [ApiAuthController::class, 'login']);
     Route::post('/register', [ApiAuthController::class, 'register']);
     //---------Admin Routing----------
