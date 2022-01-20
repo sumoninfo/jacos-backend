@@ -4,7 +4,7 @@
 
 ### Clone the repository
 
-    git clone https://github.com/sumoninfo/jacos-backend
+    git clone https://github.com/sumoninfo/jacos-backend.git
 
 ### Switch to the repo folder
 
