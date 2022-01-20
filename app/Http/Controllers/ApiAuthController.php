@@ -43,9 +43,8 @@ class ApiAuthController extends Controller
     public function register(AuthRegisterRequest $request)
     {
         try {
-            $user           = new User();
-            $user->name     = $request->name;
-            $user->email    = $request->email;
+            $user = new User();
+            $user->fill($request->all());
             $user->password = Hash::make($request->password);
             $user->save();
 

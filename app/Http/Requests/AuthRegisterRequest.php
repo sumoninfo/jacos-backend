@@ -24,10 +24,13 @@ class AuthRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'     => 'required',
-            //'phone'    => 'nullable',
-            'email'    => 'required|email|unique:users',
-            'password' => 'required',
+            'name'          => 'required|string',
+            'email'         => 'required|email|unique:users,email',
+            'phone'         => 'required|regex:/(0)[0-9]/|not_regex:/[a-z]/|min:11|max:15',
+            'password'      => 'required|same:confirm_password',
+            'date_of_birth' => 'nullable|date',
+            'gender'        => 'nullable',
+            'address'       => 'nullable'
         ];
     }
 }
