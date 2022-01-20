@@ -16,22 +16,21 @@ class DeviceAuthenticationCheck
      */
     public function handle($request, Closure $next)
     {
-        $agent = new Agent();
+        $app_key    = $request->header('app_key');
+        $app_secret = $request->header('app_secret');
+        $agent      = new Agent();
         if ($agent->isMobile()) {
-            if ($agent->browser() == 'iOS') {
-                if ($request->header('app_key') != config('devicecheck.web.key')
-                    && $request->header('app_secret') != config('devicecheck.web.secret')) {
+            if ($agent->platform() == 'iOS') {
+                if ($app_key != config('devicecheck.web.key') && $app_secret != config('devicecheck.web.secret')) {
                     return response()->json(['error' => 'Unauthenticated.'], 401);
                 }
-            } elseif ($agent->browser() == 'AndroidOS') {
-                if ($request->header('app_key') != config('devicecheck.web.key')
-                    && $request->header('app_secret') != config('devicecheck.web.secret')) {
+            } elseif ($agent->platform() == 'AndroidOS') {
+                if ($app_key != config('devicecheck.web.key') && $app_secret != config('devicecheck.web.secret')) {
                     return response()->json(['error' => 'Unauthenticated.'], 401);
                 }
             }
         } elseif ($agent->isDesktop()) {
-            if ($request->header('app_key') != config('devicecheck.web.key')
-                && $request->header('app_secret') != config('devicecheck.web.secret')) {
+            if ($app_key != config('devicecheck.web.key') && $app_secret != config('devicecheck.web.secret')) {
                 return response()->json(['error' => 'Unauthenticated.'], 401);
             }
         }
